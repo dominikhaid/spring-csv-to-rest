@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  mysql:
+    container_name: mysqlDB
+    image: mysql:5.7
+    volumes:
+      - data:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: kbbg
+      MYSQL_USER: kbbg
+      MYSQL_PASSWORD: kbbg
+    ports:
+      - '3306:3306'
+    #networks:
+      #dh-bridge:
+        #ipv4_address: 172.29.0.2
+
+  phpmyadminMysql:
+    container_name: phpmyadminMysql
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin:latest
+    restart: unless-stopped
+    ports:
+      - '8180:80'
+    environment:
+      PMA_HOST: mysql:3306
+      MYSQL_ROOT_PASSWORD: root
+    #networks:
+      #dh-bridge:
+        #ipv4_address: 172.29.0.3
+#networks:
+  #dh-bridge:
+    #external: true
+volumes:
+  data:
