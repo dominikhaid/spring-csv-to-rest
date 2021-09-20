@@ -47,14 +47,13 @@ class KbbgController {
     List<EntityModel<Kbbg>> kbbgs = repository
       .findAll()
       .stream()
-      .map(
-        kbbg ->
-          EntityModel.of(
-            kbbg,
-            linkTo(methodOn(KbbgController.class).one(kbbg.getId()))
-              .withSelfRel(),
-            linkTo(methodOn(KbbgController.class).all()).withRel("kbbgs")
-          )
+      .map(kbbg ->
+        EntityModel.of(
+          kbbg,
+          linkTo(methodOn(KbbgController.class).one(kbbg.getId()))
+            .withSelfRel(),
+          linkTo(methodOn(KbbgController.class).all()).withRel("kbbgs")
+        )
       )
       .collect(Collectors.toList());
 
@@ -69,12 +68,11 @@ class KbbgController {
     List<EntityModel<Kbbg>> kbbgs = repository
       .findByRl100CodeContaining(rlcode, Sort.by("rl100Code"))
       .stream()
-      .map(
-        kbbg ->
-          EntityModel.of(
-            kbbg,
-            linkTo(methodOn(KbbgController.class).all()).withRel("kbbgs")
-          )
+      .map(kbbg ->
+        EntityModel.of(
+          kbbg,
+          linkTo(methodOn(KbbgController.class).all()).withRel("kbbgs")
+        )
       )
       .collect(Collectors.toList());
 
@@ -91,12 +89,11 @@ class KbbgController {
     List<EntityModel<Kbbg>> kbbgs = repository
       .findByRl100CodeContaining(rlcode, Sort.by("rl100Code"))
       .stream()
-      .map(
-        kbbg ->
-          EntityModel.of(
-            kbbg,
-            linkTo(methodOn(KbbgController.class).all()).withRel("kbbgs")
-          )
+      .map(kbbg ->
+        EntityModel.of(
+          kbbg,
+          linkTo(methodOn(KbbgController.class).all()).withRel("kbbgs")
+        )
       )
       .collect(Collectors.toList());
 
@@ -115,18 +112,14 @@ class KbbgController {
   Kbbg replaceKbbg(@RequestBody Kbbg newKbbg, @PathVariable Long id) {
     return repository
       .findById(id)
-      .map(
-        kbbg -> {
-          kbbg.setPlc(newKbbg.getPlc());
-          return repository.save(kbbg);
-        }
-      )
-      .orElseGet(
-        () -> {
-          newKbbg.setId(id);
-          return repository.save(newKbbg);
-        }
-      );
+      .map(kbbg -> {
+        kbbg.setPlc(newKbbg.getPlc());
+        return repository.save(kbbg);
+      })
+      .orElseGet(() -> {
+        newKbbg.setId(id);
+        return repository.save(newKbbg);
+      });
   }
 
   @DeleteMapping("/{id}")
